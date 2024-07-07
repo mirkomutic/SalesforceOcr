@@ -1,4 +1,4 @@
-# SalesforceOcr
+# Salesforce OCR
 The LWC OCR Component package is designed to provide seamless integration of Optical Character Recognition (OCR) functionality within Salesforce Lightning applications. By leveraging Tesseract.js, the package allows users to upload image or PDF files, process them to extract text, and display the recognized text in real-time. This functionality can be particularly useful in scenarios where automated text extraction from documents is required, such as processing invoices, receipts, or any form of printed or handwritten text.
 
 ## Overview
