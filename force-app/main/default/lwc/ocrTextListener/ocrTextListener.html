@@ -1,0 +1,9 @@
+<template>
+    <lightning-card title="OCR Text Listener" icon-name="custom:custom14">
+        <div class="slds-p-horizontal_small">
+            <template lwc:if={hasText}>
+                <p>{recognizedText}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

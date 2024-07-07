@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="OCR File Upload" icon-name="custom:custom14">
+        <template if:true={loaded}>
+            <div class="slds-p-horizontal_small">
+                <lightning-input type="file" label="Upload Image or PDF" accept="image/*, .pdf" onchange={handleFilesChange}></lightning-input>
+                <iframe src="/apex/TesseractVF" style="display: none;"></iframe>
+            </div>
+        </template>
+        <template if:false={loaded}>
+            <div class="slds-p-horizontal_small slds-p-vertical_medium">
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                <p>Loading OCR engine, please wait...</p>
+            </div>
+        </template>
+    </lightning-card>
+</template>

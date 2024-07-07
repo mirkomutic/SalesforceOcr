@@ -1,0 +1,62 @@
+<apex:page >
+    <apex:includeScript value="{!$Resource.TesseractJs}" />
+    <script>
+        console.log('Visualforce page loaded, Tesseract.js included.');
+
+        function checkTesseractLoaded() {
+            if (typeof Tesseract !== 'undefined') {
+                console.log('Tesseract.js is loaded and available.');
+                return true;
+            } else {
+                console.error('Tesseract.js is not loaded.');
+                return false;
+            }
+        }
+
+        async function performOCR(blob, callbackName) {
+            if (!checkTesseractLoaded()) {
+                console.error('Tesseract.js is not available, aborting OCR process.');
+                return;
+            }
+            
+            console.log('performOCR called with callbackName:', callbackName);
+            const worker = await Tesseract.createWorker('eng');
+            console.log('Tesseract worker created:', worker);
+
+            try {
+                const ret = await worker.recognize(blob);
+                console.log(ret.data.text);
+                await worker.terminate();
+
+                // Post result back to Lightning domain
+                const lightningOrigin = new URL(document.referrer).origin;
+                window.parent.postMessage({ type: 'OCR_RESULT', callbackName: callbackName, text: ret.data.text }, lightningOrigin);
+                console.log('Result posted back to LWC. Target Origin:', lightningOrigin);
+            } catch (error) {
+                console.error('Error during OCR process:', error);
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            const allowedOrigins = [new URL(document.referrer).origin, window.location.origin];
+            console.log('Allowed Origins:', allowedOrigins);
+            if (!allowedOrigins.includes(event.origin)) {
+                console.log('Ignoring message from unexpected origin:', event.origin);
+                return;
+            }
+
+            const data = event.data;
+            if (data && data.type === 'PERFORM_OCR' && data.blob && data.callbackName) {
+                console.log('Received OCR request from LWC:', data);
+                performOCR(data.blob, data.callbackName);
+            } else {
+                console.log('Received unexpected message from LWC:', data);
+            }
+        });
+
+        // Check if Tesseract is loaded after script inclusion
+        document.addEventListener('DOMContentLoaded', function() {
+            checkTesseractLoaded();
+        });
+    </script>
+</apex:page>
