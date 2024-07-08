@@ -33,7 +33,7 @@ Acts as a container for `ocrFileUpload` and `ocrTextListener`.
 2. Deploy the components to your Salesforce org using a deployment tool like Salesforce CLI.
 
 ## Usage
-1. **File Upload**: Navigate to the component in your Salesforce org, and use the file input to upload an image or PDF.
+1. **File Upload**: Navigate to the component in your Salesforce org, and use the file input to upload an image or PDF. You can add them to any Record Page (or other targets if you configure the LWC accordingly).
 2. **OCR Processing**: The uploaded file is processed, and the extracted text is displayed in real-time.
 
 ## Configuration
